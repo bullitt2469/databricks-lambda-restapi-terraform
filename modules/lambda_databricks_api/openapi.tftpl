@@ -1,0 +1,49 @@
+openapi: 3.0.1
+info:
+  title: "${api_title}"
+  version: "1.0.0"
+  description: "${api_description}"
+
+paths:
+  /health:
+    get:
+      responses:
+        "200":
+          description: OK
+      x-amazon-apigateway-integration:
+        type: aws_proxy
+        httpMethod: POST
+        uri: "${lambda_invoke_arn}"
+        payloadFormatVersion: "1.0"
+
+  /query:
+    post:
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sql:
+                  type: string
+                  description: "Optional SQL override (defaults to configured query)"
+      responses:
+        "200":
+          description: Query results
+      x-amazon-apigateway-integration:
+        type: aws_proxy
+        httpMethod: POST
+        uri: "${lambda_invoke_arn}"
+        payloadFormatVersion: "1.0"
+
+x-amazon-apigateway-cors:
+  allowOrigins:
+    - "*"
+  allowMethods:
+    - "GET"
+    - "POST"
+    - "OPTIONS"
+  allowHeaders:
+    - "Content-Type"
+    - "Authorization"

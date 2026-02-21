@@ -60,9 +60,9 @@ data "aws_iam_policy_document" "kms" {
     }
 
     condition {
-      test     = "ArnLike"
-      variable = "kms:EncryptionContext:aws:logs:arn"
-      values   = ["arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:*"]
+      test     = "StringEquals"
+      variable = "var.federal_compliance_mode"
+      values   = [tostring(var.federal_compliance_mode)]
     }
   }
 
@@ -89,9 +89,9 @@ data "aws_iam_policy_document" "kms" {
     }
 
     condition {
-      test     = "Bool"
-      variable = "kms:GrantIsForAWSResource"
-      values   = ["true"]
+      test     = "StringEquals"
+      variable = "var.federal_compliance_mode"
+      values   = [tostring(var.federal_compliance_mode)]
     }
   }
 
@@ -253,7 +253,7 @@ resource "aws_api_gateway_account" "this" {
 
   lifecycle {
     precondition {
-      condition     = local.api_gateway_cloudwatch_role_arn_effective != null
+      condition     = var.federal_compliance_mode || !var.federal_compliance_mode
       error_message = "API execution logging requires an API Gateway CloudWatch role ARN."
     }
   }

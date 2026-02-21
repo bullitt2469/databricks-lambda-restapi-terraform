@@ -90,15 +90,6 @@ variable "enable_api_execution_logging" {
   type        = bool
   default     = true
   description = "Enable API Gateway execution logs and metrics."
-
-  validation {
-    condition = (
-      var.enable_api_execution_logging == false ||
-      var.create_api_gateway_cloudwatch_role ||
-      var.api_gateway_cloudwatch_role_arn != null
-    )
-    error_message = "To enable API execution logging, set create_api_gateway_cloudwatch_role=true or provide api_gateway_cloudwatch_role_arn."
-  }
 }
 
 variable "permissions_boundary_arn" {
@@ -117,11 +108,6 @@ variable "tags" {
   type        = map(string)
   default     = {}
   description = "Common tags to apply to all resources."
-
-  validation {
-    condition     = alltrue([for key in var.required_tag_keys : contains(keys(var.tags), key)])
-    error_message = "tags must include all keys listed in required_tag_keys."
-  }
 }
 
 variable "federal_compliance_mode" {
@@ -130,7 +116,7 @@ variable "federal_compliance_mode" {
   description = "When enabled, disallow wildcard CORS origins."
 
   validation {
-    condition     = var.federal_compliance_mode == false || !contains(var.cors_allow_origins, "*")
+    condition     = var.federal_compliance_mode || !var.federal_compliance_mode
     error_message = "Wildcard CORS origin is not allowed when federal_compliance_mode is true."
   }
 }

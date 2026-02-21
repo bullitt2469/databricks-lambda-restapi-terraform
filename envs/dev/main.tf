@@ -57,6 +57,7 @@ module "federal_compliance_services" {
   create_config_service_role                  = var.create_config_service_role
   config_service_role_arn                     = var.config_service_role_arn
   config_delivery_frequency                   = var.config_delivery_frequency
+  federal_compliance_mode                     = var.federal_compliance_mode
 
   tags = var.tags
 }

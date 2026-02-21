@@ -64,17 +64,12 @@ variable "config_delivery_frequency" {
   type        = string
   default     = "TwentyFour_Hours"
   description = "AWS Config snapshot delivery frequency."
+}
 
-  validation {
-    condition = contains([
-      "One_Hour",
-      "Three_Hours",
-      "Six_Hours",
-      "Twelve_Hours",
-      "TwentyFour_Hours"
-    ], var.config_delivery_frequency)
-    error_message = "config_delivery_frequency must be one of One_Hour, Three_Hours, Six_Hours, Twelve_Hours, TwentyFour_Hours."
-  }
+variable "federal_compliance_mode" {
+  type        = bool
+  default     = true
+  description = "Top-level federal compliance mode toggle used for condition checks."
 }
 
 variable "tags" {

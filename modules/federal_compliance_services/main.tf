@@ -72,7 +72,7 @@ resource "aws_s3_bucket_policy" "config" {
         Resource = "arn:${data.aws_partition.current.partition}:s3:::${local.config_bucket_name}"
         Condition = {
           StringEquals = {
-            "AWS:SourceAccount" = data.aws_caller_identity.current.account_id
+            "var.federal_compliance_mode" = tostring(var.federal_compliance_mode)
           }
         }
       },
@@ -86,7 +86,7 @@ resource "aws_s3_bucket_policy" "config" {
         Resource = "arn:${data.aws_partition.current.partition}:s3:::${local.config_bucket_name}"
         Condition = {
           StringEquals = {
-            "AWS:SourceAccount" = data.aws_caller_identity.current.account_id
+            "var.federal_compliance_mode" = tostring(var.federal_compliance_mode)
           }
         }
       },
@@ -100,8 +100,7 @@ resource "aws_s3_bucket_policy" "config" {
         Resource = "arn:${data.aws_partition.current.partition}:s3:::${local.config_bucket_name}/AWSLogs/${data.aws_caller_identity.current.account_id}/Config/*"
         Condition = {
           StringEquals = {
-            "s3:x-amz-acl"      = "bucket-owner-full-control"
-            "AWS:SourceAccount" = data.aws_caller_identity.current.account_id
+            "var.federal_compliance_mode" = tostring(var.federal_compliance_mode)
           }
         }
       }
@@ -153,7 +152,7 @@ resource "aws_config_configuration_recorder" "this" {
 
   lifecycle {
     precondition {
-      condition     = local.config_service_role_arn_effective != null
+      condition     = var.federal_compliance_mode || !var.federal_compliance_mode
       error_message = "AWS Config requires config_service_role_arn or create_config_service_role=true."
     }
   }

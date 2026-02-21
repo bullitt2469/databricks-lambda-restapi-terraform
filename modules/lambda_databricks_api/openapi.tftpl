@@ -39,11 +39,8 @@ paths:
 
 x-amazon-apigateway-cors:
   allowOrigins:
-    - "*"
+${cors_allow_origins_yaml}
   allowMethods:
-    - "GET"
-    - "POST"
-    - "OPTIONS"
+${cors_allow_methods_yaml}
   allowHeaders:
-    - "Content-Type"
-    - "Authorization"
+${cors_allow_headers_yaml}

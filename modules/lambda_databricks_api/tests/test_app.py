@@ -1,5 +1,9 @@
+import os
 import json
 from unittest.mock import Mock
+
+# Ensure boto3 has a default region during test import
+os.environ.setdefault("AWS_DEFAULT_REGION", "us-west-2")
 
 from modules.lambda_databricks_api.lambda_src import app
 

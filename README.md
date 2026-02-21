@@ -1,92 +1,51 @@
-# AWS Lambda REST API → Databricks (AWS-hosted) Data Integration (Terraform)
+# AWS Lambda REST API -> Databricks (Federal Reusable Baseline)
 
-This repository provisions an **AWS API Gateway REST API** backed by an **AWS Lambda** function that queries an
-**AWS-hosted Databricks SQL Warehouse** via the Databricks **SQL Statement Execution API**.
+This repository provisions an AWS API Gateway REST API backed by an AWS Lambda function that queries an AWS-hosted Databricks SQL Warehouse.
 
-It includes:
+It is structured for federal reuse with an Infrastructure-as-Code baseline that aligns with NIST SP 800-53 Rev. 5 control implementation and post-deployment validation.
+
+## What this baseline includes
+
 - Modular Terraform (`modules/lambda_databricks_api`)
 - Environment roots (`envs/dev`, `envs/prod`)
-- OpenAPI spec templated with variables (`openapi.tftpl`)
-- Lambda code (Python) that:
-  - Reads a Databricks PAT from **AWS Secrets Manager**
-  - Executes SQL against a specified Databricks **Warehouse (SQL endpoint)**
-  - Exposes `/health` and `/query` endpoints
+- Lambda application code and tests
+- Federal-focused security defaults:
+  - Customer-managed KMS encryption (Lambda env vars, Secrets Manager secret, CloudWatch log groups)
+  - KMS key rotation enabled
+  - CloudWatch log retention defaults at 365 days
+  - API Gateway access logging + execution logging + metrics
+  - X-Ray tracing for Lambda and API Gateway
+  - Required resource tag schema
+  - Federal mode that blocks wildcard CORS origins
+  - Optional continuous compliance services:
+    - AWS Config recorder + delivery channel
+    - AWS Security Hub + AWS Foundational Security Best Practices standard
+- Compliance artifacts:
+  - NIST 800-53r5 control mapping document
+  - Post-deployment validation script with evidence bundle output
 
-> Region note: This package defaults to **us-east-1** (US-East / N. Virginia).
+## Repository layout
 
----
-
-## Architecture
-
-```mermaid
-flowchart LR
-  Client[Client / App] -->|HTTPS| APIGW[API Gateway REST API]
-  APIGW -->|Lambda proxy| L[Lambda: Databricks Query Handler]
-  L -->|GetSecretValue| SM[Secrets Manager: Databricks PAT]
-  L -->|HTTPS: /api/2.0/sql/statements| DBX[Databricks (AWS-hosted) SQL Warehouse]
-  DBX -->|JSON Results| L --> APIGW --> Client
-```
-
----
-
-## Repo structure
-
-```
+```text
 .
-├── .github/workflows/terraform.yml
+├── compliance/
+│   ├── NIST-800-53r5-control-matrix.md
+│   └── validation/
+│       └── validate_federal_baseline.sh
 ├── envs/
 │   ├── dev/
 │   └── prod/
 └── modules/
+    ├── federal_compliance_services/
     └── lambda_databricks_api/
-        ├── lambda_src/
-        │   └── app.py
-        ├── main.tf
-        ├── openapi.tftpl
-        ├── outputs.tf
-        └── variables.tf
 ```
 
----
+## Deploy
 
-## Endpoints
+1. Configure AWS credentials.
+2. Configure environment values in `envs/<env>/terraform.tfvars`.
+3. Deploy:
 
-After apply, Terraform outputs an `invoke_url` like:
-
-`https://<api-id>.execute-api.us-east-1.amazonaws.com/dev`
-
-### Health
-`GET /health`
-
-### Query
-`POST /query`
-Body:
-```json
-{ "sql": "SELECT current_date() AS today" }
-```
-If `sql` is omitted, Lambda runs `databricks_default_query`.
-
----
-
-## Databricks requirements (AWS-hosted)
-
-You need:
-- `databricks_host` (workspace URL), e.g. `https://dbc-<id>.cloud.databricks.com`
-- `databricks_warehouse_id` (SQL warehouse ID)
-- A Databricks **PAT** with permission to use the warehouse
-
-This PAT is stored in AWS Secrets Manager by Terraform and read by Lambda at runtime.
-
----
-
-## Deploy (local)
-
-1) Authenticate to AWS:
-```bash
-aws sts get-caller-identity
-```
-
-2) Deploy dev:
 ```bash
 cd envs/dev
 terraform init
@@ -94,31 +53,49 @@ terraform plan
 terraform apply
 ```
 
-3) Test:
+## Post-deployment compliance validation
+
+Run validation from the environment directory:
+
 ```bash
-curl -s "$(terraform output -raw invoke_url)/health"
-curl -s -X POST "$(terraform output -raw invoke_url)/query"   -H "Content-Type: application/json"   -d '{"sql":"SELECT 1 AS one"}'
+cd envs/dev
+../../compliance/validation/validate_federal_baseline.sh
 ```
 
----
+This script:
+- reads Terraform outputs for deployed resource IDs
+- queries AWS APIs for effective security configuration
+- evaluates required baseline checks
+- writes machine-readable evidence to `compliance/validation/evidence/<timestamp>/`
+- exits non-zero if required checks fail
 
-## CI/CD (GitHub Actions)
+## CI/CD compliance validation
 
-A workflow is included at `.github/workflows/terraform.yml` that runs:
-- `fmt`, `validate`, `plan` on PRs
-- `apply` on pushes to `main`
+The workflow at `/Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/.github/workflows/terraform.yml` now:
+- runs Terraform plan on PRs
+- runs Terraform apply on `main`
+- runs post-apply federal validation on `main`
+- uploads compliance evidence artifacts from `compliance/validation/evidence/`
 
-### Required GitHub secrets
-- `AWS_ACCESS_KEY_ID`
-- `AWS_SECRET_ACCESS_KEY`
+## NIST 800-53 Rev. 5 mapping
 
-Optional (recommended if using session tokens):
-- `AWS_SESSION_TOKEN`
+Control mapping is documented in:
+- `compliance/NIST-800-53r5-control-matrix.md`
 
-Set `TF_ENV` as a GitHub Actions variable (`dev` or `prod`) to choose environment.
+This includes implemented controls, evidence commands, and shared-responsibility notes for agency tailoring.
 
----
+## Federal tailoring guidance
 
-## Security notes
-- Do **not** commit `databricks_pat_value` in `terraform.tfvars` for real use. Use GitHub secrets / TF_VAR_ vars.
-- Consider VPC egress controls, NAT, or PrivateLink patterns if your environment requires private-only connectivity.
+Before production use, tailor to your Authorizing Official (AO) requirements:
+
+- Set `cors_allow_origins` to approved agency domains.
+- Set `required_tag_keys` to your enterprise taxonomy.
+- Provide `permissions_boundary_arn` if required by policy.
+- Set `api_gateway_cloudwatch_role_arn` to an agency-managed shared role, or keep `create_api_gateway_cloudwatch_role = true`.
+- Integrate with enterprise services (AWS Config, Security Hub, SIEM, IR playbooks).
+- Add network boundary controls (for example: VPC endpoints, WAF, private connectivity) as required.
+
+## Notes
+
+- Do not commit real Databricks PAT values in `terraform.tfvars`.
+- This baseline supports compliance validation evidence but does not replace agency ATO processes.

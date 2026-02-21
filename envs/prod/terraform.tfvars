@@ -16,6 +16,25 @@ databricks_pat_value = "REPLACE_ME"
 api_title       = "Databricks API (prod)"
 api_description = "Example API calling Databricks SQL Warehouse (prod)."
 
+# CORS should be explicitly scoped for federal workloads.
+cors_allow_origins = ["https://app.example.gov"]
+
+# Create API Gateway CloudWatch role unless your org provides a shared role ARN.
+create_api_gateway_cloudwatch_role = true
+# api_gateway_cloudwatch_role_arn  = "arn:aws:iam::<account-id>:role/<shared-apigw-cloudwatch-role>"
+
 tags = {
-  env = "prod"
+  environment         = "prod"
+  system              = "databricks-lambda-api"
+  owner               = "platform-team"
+  data_classification = "CUI"
+  fips_199_impact     = "moderate"
 }
+
+# Continuous compliance services (federal baseline)
+enable_aws_config                           = true
+enable_security_hub                         = true
+enable_foundational_best_practices_standard = true
+create_config_bucket                        = true
+create_config_service_role                  = true
+config_delivery_frequency                   = "TwentyFour_Hours"

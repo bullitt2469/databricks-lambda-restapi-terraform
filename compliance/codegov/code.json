@@ -1,0 +1,49 @@
+{
+  "version": "2.0.0",
+  "agency": "U.S. Department of Agriculture",
+  "measurementType": "projects",
+  "releases": [
+    {
+      "name": "databricks-lambda-restapi-terraform",
+      "version": "0.1.0",
+      "description": "Reusable USDA-ready Terraform and AWS Lambda/API Gateway integration for Databricks SQL with NIST 800-53r5 controls, SBOM support, and federal compliance validation workflows.",
+      "landingURL": "https://github.com/USDA/databricks-lambda-restapi-terraform",
+      "repositoryURL": "https://github.com/USDA/databricks-lambda-restapi-terraform",
+      "downloadURL": "https://github.com/USDA/databricks-lambda-restapi-terraform/archive/refs/heads/main.zip",
+      "vcs": "git",
+      "status": "Production",
+      "permissions": {
+        "usageType": "openSource",
+        "licenses": [
+          {
+            "name": "MIT",
+            "URL": "https://opensource.org/licenses/MIT"
+          }
+        ]
+      },
+      "organization": "U.S. Department of Agriculture",
+      "tags": [
+        "terraform",
+        "aws",
+        "lambda",
+        "api-gateway",
+        "databricks",
+        "security",
+        "nist-800-53r5",
+        "sbom",
+        "codegov",
+        "share-it-act"
+      ],
+      "contact": {
+        "email": "opensource@usda.gov",
+        "name": "USDA Open Source Program"
+      },
+      "laborHours": 0,
+      "date": {
+        "created": "2026-02-21",
+        "lastModified": "2026-02-21",
+        "metadataLastUpdated": "2026-02-21"
+      }
+    }
+  ]
+}

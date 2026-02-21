@@ -15,5 +15,5 @@ output "security_hub_enabled" {
 }
 
 output "security_hub_foundational_standard_subscription_arn" {
-  value = var.enable_security_hub && var.enable_foundational_best_practices_standard ? aws_securityhub_standards_subscription.aws_foundational[0].standards_subscription_arn : null
+  value = var.enable_security_hub && var.enable_foundational_best_practices_standard ? aws_securityhub_standards_subscription.aws_foundational[0].id : null
 }

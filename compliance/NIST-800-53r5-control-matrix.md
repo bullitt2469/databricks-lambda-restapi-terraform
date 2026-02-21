@@ -42,6 +42,20 @@ Scope:
   - incident response workflows
 - Include SBOM review in ATO package evidence and POA&M workflows.
 - Consider adding network boundary controls (VPC integration, private endpoints, WAF) based on AO requirements.
+- Align reusable release documentation with SHARE IT Act transfer expectations and agency Code.gov inventory workflows.
+
+## Cross-Framework Documentation View
+
+```mermaid
+flowchart LR
+  IaC["Terraform + Lambda Implementation"] --> NIST["NIST 800-53r5 Mapping"]
+  IaC --> SBOM["SBOM (CycloneDX)"]
+  IaC --> Validate["Post-Deploy Validation Evidence"]
+  SBOM --> Reuse["SHARE IT Reuse Package"]
+  NIST --> Reuse
+  Validate --> Reuse
+  Reuse --> CodeGov["Code.gov Metadata Submission"]
+```
 
 ## Evidence Collection
 
@@ -58,3 +72,5 @@ SBOM evidence and policy mapping:
 
 - `/Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/compliance/sbom/sbom.cyclonedx.json`
 - `/Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/compliance/sbom/SBOM-MINIMUM-ELEMENTS-MAPPING.md`
+- `/Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/compliance/reuse/SHARE-IT-CODEGOV-ALIGNMENT.md`
+- `/Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/compliance/codegov/code.json.template`

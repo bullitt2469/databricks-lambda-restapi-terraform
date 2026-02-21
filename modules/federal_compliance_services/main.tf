@@ -96,7 +96,7 @@ resource "aws_s3_bucket_policy" "config" {
         Principal = {
           Service = "config.amazonaws.com"
         }
-        Action = "s3:PutObject"
+        Action   = "s3:PutObject"
         Resource = "arn:${data.aws_partition.current.partition}:s3:::${local.config_bucket_name}/AWSLogs/${data.aws_caller_identity.current.account_id}/Config/*"
         Condition = {
           StringEquals = {

@@ -4,8 +4,8 @@ module "lambda_databricks_api" {
   name_prefix = var.name_prefix
   stage_name  = var.stage_name
 
-  lambda_runtime = var.lambda_runtime
-  lambda_handler = var.lambda_handler
+  lambda_runtime         = var.lambda_runtime
+  lambda_handler         = var.lambda_handler
   lambda_timeout_seconds = var.lambda_timeout_seconds
   lambda_memory_mb       = var.lambda_memory_mb
   enable_xray_tracing    = var.enable_xray_tracing
@@ -25,16 +25,16 @@ module "lambda_databricks_api" {
   cors_allow_methods = var.cors_allow_methods
   cors_allow_headers = var.cors_allow_headers
 
-  enable_customer_managed_kms       = var.enable_customer_managed_kms
-  kms_deletion_window_in_days       = var.kms_deletion_window_in_days
-  cloudwatch_log_retention_days     = var.cloudwatch_log_retention_days
-  api_access_log_retention_days     = var.api_access_log_retention_days
-  create_api_gateway_cloudwatch_role = var.create_api_gateway_cloudwatch_role
-  api_gateway_cloudwatch_role_arn   = var.api_gateway_cloudwatch_role_arn
-  enable_api_execution_logging       = var.enable_api_execution_logging
-  permissions_boundary_arn           = var.permissions_boundary_arn
-  required_tag_keys                  = var.required_tag_keys
-  federal_compliance_mode            = var.federal_compliance_mode
+  enable_customer_managed_kms           = var.enable_customer_managed_kms
+  kms_deletion_window_in_days           = var.kms_deletion_window_in_days
+  cloudwatch_log_retention_days         = var.cloudwatch_log_retention_days
+  api_access_log_retention_days         = var.api_access_log_retention_days
+  create_api_gateway_cloudwatch_role    = var.create_api_gateway_cloudwatch_role
+  api_gateway_cloudwatch_role_arn       = var.api_gateway_cloudwatch_role_arn
+  enable_api_execution_logging          = var.enable_api_execution_logging
+  permissions_boundary_arn              = var.permissions_boundary_arn
+  required_tag_keys                     = var.required_tag_keys
+  federal_compliance_mode               = var.federal_compliance_mode
   additional_kms_key_administrator_arns = var.additional_kms_key_administrator_arns
   additional_kms_key_user_arns          = var.additional_kms_key_user_arns
 
@@ -47,16 +47,16 @@ module "federal_compliance_services" {
   name_prefix = var.name_prefix
   stage_name  = var.stage_name
 
-  enable_aws_config                               = var.enable_aws_config
-  enable_security_hub                             = var.enable_security_hub
-  enable_foundational_best_practices_standard     = var.enable_foundational_best_practices_standard
-  create_config_bucket                            = var.create_config_bucket
-  config_bucket_name                              = var.config_bucket_name
-  config_bucket_prefix                            = var.config_bucket_prefix
-  config_s3_kms_key_arn                           = var.config_s3_kms_key_arn != null ? var.config_s3_kms_key_arn : module.lambda_databricks_api.kms_key_arn
-  create_config_service_role                      = var.create_config_service_role
-  config_service_role_arn                         = var.config_service_role_arn
-  config_delivery_frequency                       = var.config_delivery_frequency
+  enable_aws_config                           = var.enable_aws_config
+  enable_security_hub                         = var.enable_security_hub
+  enable_foundational_best_practices_standard = var.enable_foundational_best_practices_standard
+  create_config_bucket                        = var.create_config_bucket
+  config_bucket_name                          = var.config_bucket_name
+  config_bucket_prefix                        = var.config_bucket_prefix
+  config_s3_kms_key_arn                       = var.config_s3_kms_key_arn != null ? var.config_s3_kms_key_arn : module.lambda_databricks_api.kms_key_arn
+  create_config_service_role                  = var.create_config_service_role
+  config_service_role_arn                     = var.config_service_role_arn
+  config_delivery_frequency                   = var.config_delivery_frequency
 
   tags = var.tags
 }

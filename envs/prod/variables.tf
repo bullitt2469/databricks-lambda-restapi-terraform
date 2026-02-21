@@ -4,7 +4,7 @@ variable "aws_region" {
 }
 
 variable "name_prefix" { type = string }
-variable "stage_name"  { type = string }
+variable "stage_name" { type = string }
 
 variable "lambda_runtime" {
   type    = string
@@ -54,8 +54,8 @@ variable "databricks_default_query" {
 }
 
 variable "databricks_pat_value" {
-  type      = string
-  sensitive = true
+  type        = string
+  sensitive   = true
   description = "Databricks PAT stored into AWS Secrets Manager; provide via TF_VAR_ or CI secrets."
 }
 
@@ -195,7 +195,7 @@ variable "config_delivery_frequency" {
 }
 
 variable "tags" {
-  type    = map(string)
+  type = map(string)
   default = {
     environment         = "prod"
     system              = "databricks-lambda-api"

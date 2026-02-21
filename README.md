@@ -4,6 +4,23 @@ This repository provisions an AWS API Gateway REST API backed by an AWS Lambda f
 
 It is structured for federal reuse with an Infrastructure-as-Code baseline that aligns with NIST SP 800-53 Rev. 5 control implementation and post-deployment validation.
 
+## Architecture Diagram
+
+```mermaid
+flowchart LR
+  Client["Client System"] --> APIGW["API Gateway (REST)"]
+  APIGW --> Lambda["Lambda Function"]
+  Lambda --> SM["Secrets Manager (Databricks PAT)"]
+  Lambda --> DBX["Databricks SQL API"]
+  Lambda --> CWL["CloudWatch Logs"]
+  APIGW --> APILogs["API Access Logs"]
+  Lambda --> XRay["AWS X-Ray"]
+  APIGW --> XRay
+  KMS["KMS CMK"] --> SM
+  KMS --> CWL
+  KMS --> APILogs
+```
+
 ## What this baseline includes
 
 - Modular Terraform (`modules/lambda_databricks_api`)
@@ -24,6 +41,7 @@ It is structured for federal reuse with an Infrastructure-as-Code baseline that 
   - NIST 800-53r5 control mapping document
   - Post-deployment validation script with evidence bundle output
   - CycloneDX SBOM and CISA 2025 minimum-element mapping
+  - SHARE IT Act + Code.gov reuse alignment guide and metadata templates
 
 ## Repository layout
 
@@ -31,6 +49,11 @@ It is structured for federal reuse with an Infrastructure-as-Code baseline that 
 .
 ├── compliance/
 │   ├── NIST-800-53r5-control-matrix.md
+│   ├── codegov/
+│   │   ├── CODEGOV-SUBMISSION-CHECKLIST.md
+│   │   └── code.json.template
+│   ├── reuse/
+│   │   └── SHARE-IT-CODEGOV-ALIGNMENT.md
 │   ├── sbom/
 │   │   ├── SBOM-MINIMUM-ELEMENTS-MAPPING.md
 │   │   ├── sbom.cyclonedx.json
@@ -82,12 +105,65 @@ The workflow at `/Users/caseycook/Desktop/Work Source Code/databricks-lambda-res
 - runs post-apply federal validation on `main`
 - uploads compliance evidence artifacts from `compliance/validation/evidence/`
 
+## Local commit-time test configuration
+
+To run the same checks as GitHub Actions on every commit:
+
+1. Configure local env file:
+
+```bash
+cp /Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/.env.local.test.example /Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/.env.local.test
+```
+
+2. Install commit hook:
+
+```bash
+/Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/scripts/setup-commit-hooks.sh
+```
+
+3. Optional: load env vars into current shell:
+
+```bash
+source /Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/scripts/load-local-test-env.sh
+```
+
+Commit hook behavior:
+- Runs `/Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/scripts/run-ci-local.sh`
+- Validates SBOM minimum elements
+- Validates Code.gov metadata minimum elements
+- Runs Terraform `fmt`, `init -backend=false`, and `validate` for `modules`, `envs/dev`, and `envs/prod`
+- Installs Python test dependencies and runs `pytest`
+
+To run the Terraform deployment-workflow parity checks locally (requires AWS credentials):
+
+```bash
+TF_ENV=dev /Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/scripts/run-terraform-workflow-local.sh
+```
+
 ## NIST 800-53 Rev. 5 mapping
 
 Control mapping is documented in:
 - `compliance/NIST-800-53r5-control-matrix.md`
 
 This includes implemented controls, evidence commands, and shared-responsibility notes for agency tailoring.
+
+## Documentation and Reuse Diagram
+
+```mermaid
+flowchart TD
+  Code["Source Code + Terraform"] --> LocalChecks["Local Commit Checks"]
+  LocalChecks --> CI["GitHub Actions CI"]
+  CI --> SBOM["SBOM Validation"]
+  CI --> TfValidate["Terraform Validate/Plan"]
+  CI --> Tests["Pytest"]
+  TfValidate --> Deploy["Apply in Environment"]
+  Deploy --> FedValidate["Federal Validation Script"]
+  SBOM --> Docs["Compliance Documentation Set"]
+  FedValidate --> Docs
+  Docs --> NIST["NIST 800-53r5 Matrix"]
+  Docs --> ShareIt["SHARE IT / Reuse Guide"]
+  Docs --> CodeGov["Code.gov Metadata"]
+```
 
 ## SBOM (CISA 2025 minimum-elements aligned)
 
@@ -98,6 +174,14 @@ This includes implemented controls, evidence commands, and shared-responsibility
 ```bash
 python3 compliance/sbom/validate_sbom.py
 ```
+
+## SHARE IT Act and Code.gov Alignment
+
+- Reuse guide: `/Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/compliance/reuse/SHARE-IT-CODEGOV-ALIGNMENT.md`
+- Code.gov template: `/Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/compliance/codegov/code.json.template`
+- USDA Code.gov metadata: `/Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/compliance/codegov/code.json`
+- Code.gov checklist: `/Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/compliance/codegov/CODEGOV-SUBMISSION-CHECKLIST.md`
+- Code.gov metadata validator: `/Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/compliance/codegov/validate_codegov_metadata.py`
 
 ## Federal tailoring guidance
 

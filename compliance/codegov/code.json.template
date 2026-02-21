@@ -1,0 +1,48 @@
+{
+  "version": "2.0.0",
+  "agency": "Example Federal Agency",
+  "measurementType": "projects",
+  "releases": [
+    {
+      "name": "databricks-lambda-restapi-terraform",
+      "version": "0.1.0",
+      "description": "Terraform + Lambda + API Gateway integration for Databricks SQL with federal compliance controls.",
+      "landingURL": "https://github.com/<org>/databricks-lambda-restapi-terraform",
+      "repositoryURL": "https://github.com/<org>/databricks-lambda-restapi-terraform",
+      "downloadURL": "https://github.com/<org>/databricks-lambda-restapi-terraform/archive/refs/heads/main.zip",
+      "vcs": "git",
+      "status": "Prototype",
+      "permissions": {
+        "usageType": "openSource",
+        "licenses": [
+          {
+            "name": "MIT",
+            "URL": "https://opensource.org/licenses/MIT"
+          }
+        ]
+      },
+      "organization": "Example Federal Agency",
+      "tags": [
+        "terraform",
+        "aws",
+        "lambda",
+        "api-gateway",
+        "security",
+        "nist-800-53r5",
+        "sbom",
+        "codegov",
+        "share-it-act"
+      ],
+      "contact": {
+        "email": "opensource@example.gov",
+        "name": "Open Source Program Office"
+      },
+      "laborHours": 0,
+      "date": {
+        "created": "2026-02-21",
+        "lastModified": "2026-02-21",
+        "metadataLastUpdated": "2026-02-21"
+      }
+    }
+  ]
+}

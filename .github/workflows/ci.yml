@@ -6,7 +6,7 @@ on:
   pull_request:
 
 jobs:
-  sbom:
+  metadata:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -14,9 +14,12 @@ jobs:
       - name: Validate SBOM minimum elements
         run: python3 compliance/sbom/validate_sbom.py
 
+      - name: Validate Code.gov metadata minimum elements
+        run: python3 compliance/codegov/validate_codegov_metadata.py
+
   terraform:
     runs-on: ubuntu-latest
-    needs: sbom
+    needs: metadata
     steps:
       - uses: actions/checkout@v4
 

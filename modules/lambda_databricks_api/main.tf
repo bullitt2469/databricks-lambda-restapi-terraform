@@ -16,9 +16,9 @@ data "aws_iam_policy_document" "kms" {
   count = var.enable_customer_managed_kms ? 1 : 0
 
   statement {
-    sid    = "AllowRootKeyAdministration"
-    effect = "Allow"
-    actions = ["kms:*"]
+    sid       = "AllowRootKeyAdministration"
+    effect    = "Allow"
+    actions   = ["kms:*"]
     resources = ["*"]
 
     principals {
@@ -43,7 +43,7 @@ data "aws_iam_policy_document" "kms" {
   }
 
   statement {
-    sid = "AllowCloudWatchLogsUse"
+    sid    = "AllowCloudWatchLogsUse"
     effect = "Allow"
     actions = [
       "kms:Encrypt",
@@ -67,7 +67,7 @@ data "aws_iam_policy_document" "kms" {
   }
 
   statement {
-    sid = "AllowLambdaAndSecretsManagerServiceUse"
+    sid    = "AllowLambdaAndSecretsManagerServiceUse"
     effect = "Allow"
     actions = [
       "kms:Encrypt",
@@ -81,7 +81,7 @@ data "aws_iam_policy_document" "kms" {
     resources = ["*"]
 
     principals {
-      type        = "Service"
+      type = "Service"
       identifiers = [
         "lambda.amazonaws.com",
         "secretsmanager.amazonaws.com"

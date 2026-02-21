@@ -23,6 +23,7 @@ It is structured for federal reuse with an Infrastructure-as-Code baseline that 
 - Compliance artifacts:
   - NIST 800-53r5 control mapping document
   - Post-deployment validation script with evidence bundle output
+  - CycloneDX SBOM and CISA 2025 minimum-element mapping
 
 ## Repository layout
 
@@ -30,6 +31,10 @@ It is structured for federal reuse with an Infrastructure-as-Code baseline that 
 .
 ├── compliance/
 │   ├── NIST-800-53r5-control-matrix.md
+│   ├── sbom/
+│   │   ├── SBOM-MINIMUM-ELEMENTS-MAPPING.md
+│   │   ├── sbom.cyclonedx.json
+│   │   └── validate_sbom.py
 │   └── validation/
 │       └── validate_federal_baseline.sh
 ├── envs/
@@ -83,6 +88,16 @@ Control mapping is documented in:
 - `compliance/NIST-800-53r5-control-matrix.md`
 
 This includes implemented controls, evidence commands, and shared-responsibility notes for agency tailoring.
+
+## SBOM (CISA 2025 minimum-elements aligned)
+
+- SBOM file: `/Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/compliance/sbom/sbom.cyclonedx.json`
+- Mapping and governance: `/Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/compliance/sbom/SBOM-MINIMUM-ELEMENTS-MAPPING.md`
+- Validation command:
+
+```bash
+python3 compliance/sbom/validate_sbom.py
+```
 
 ## Federal tailoring guidance
 

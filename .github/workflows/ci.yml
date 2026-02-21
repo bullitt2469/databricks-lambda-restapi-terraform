@@ -6,8 +6,17 @@ on:
   pull_request:
 
 jobs:
+  sbom:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate SBOM minimum elements
+        run: python3 compliance/sbom/validate_sbom.py
+
   terraform:
     runs-on: ubuntu-latest
+    needs: sbom
     steps:
       - uses: actions/checkout@v4
 

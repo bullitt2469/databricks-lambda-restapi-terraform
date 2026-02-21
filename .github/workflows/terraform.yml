@@ -84,3 +84,11 @@ jobs:
           name: compliance-evidence-${{ env.TF_ENV }}-${{ github.run_number }}
           path: compliance/validation/evidence/
           if-no-files-found: error
+
+      - name: Upload SBOM artifact
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom-${{ env.TF_ENV }}-${{ github.run_number }}
+          path: compliance/sbom/
+          if-no-files-found: error

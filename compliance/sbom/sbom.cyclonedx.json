@@ -1,0 +1,150 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:8d0aa416-7f7e-455d-8f5f-0dc1d669f7d2",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-02-21T00:00:00Z",
+    "tools": [
+      {
+        "vendor": "OpenAI Codex",
+        "name": "Codex SBOM Authoring",
+        "version": "1.0"
+      }
+    ],
+    "component": {
+      "type": "application",
+      "name": "databricks-lambda-restapi-terraform",
+      "version": "0.1.0",
+      "description": "Terraform and Lambda integration for API Gateway to Databricks SQL.",
+      "supplier": {
+        "name": "Casey Cook / Federal Reuse Baseline"
+      },
+      "purl": "pkg:generic/databricks-lambda-restapi-terraform@0.1.0"
+    },
+    "authors": [
+      {
+        "name": "Casey Cook"
+      }
+    ],
+    "properties": [
+      {
+        "name": "cisa.minimum-elements.profile",
+        "value": "2025-minimum-elements-sbom-aligned"
+      },
+      {
+        "name": "sbom.lifecycle.phase",
+        "value": "post-build pre-deploy release"
+      }
+    ]
+  },
+  "components": [
+    {
+      "type": "library",
+      "name": "boto3",
+      "version": ">=1.26",
+      "scope": "required",
+      "purl": "pkg:pypi/boto3",
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "requirements-dev.txt"
+          },
+          {
+            "location": "modules/lambda_databricks_api/lambda_src/app.py"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "dependency.source",
+          "value": "requirements-dev.txt"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "name": "pytest",
+      "version": ">=7.0",
+      "scope": "optional",
+      "purl": "pkg:pypi/pytest",
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "requirements-dev.txt"
+          },
+          {
+            "location": "modules/lambda_databricks_api/tests/test_app.py"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "dependency.source",
+          "value": "requirements-dev.txt"
+        },
+        {
+          "name": "dependency.usage",
+          "value": "test"
+        }
+      ]
+    },
+    {
+      "type": "framework",
+      "name": "hashicorp/aws",
+      "version": ">=5.0",
+      "scope": "required",
+      "purl": "pkg:terraform/hashicorp/aws",
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "envs/dev/versions.tf"
+          },
+          {
+            "location": "envs/prod/versions.tf"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "dependency.source",
+          "value": "terraform provider"
+        }
+      ]
+    },
+    {
+      "type": "framework",
+      "name": "hashicorp/archive",
+      "version": ">=2.4.0",
+      "scope": "required",
+      "purl": "pkg:terraform/hashicorp/archive",
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "envs/dev/versions.tf"
+          },
+          {
+            "location": "envs/prod/versions.tf"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "dependency.source",
+          "value": "terraform provider"
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "pkg:generic/databricks-lambda-restapi-terraform@0.1.0",
+      "dependsOn": [
+        "pkg:pypi/boto3",
+        "pkg:pypi/pytest",
+        "pkg:terraform/hashicorp/aws",
+        "pkg:terraform/hashicorp/archive"
+      ]
+    }
+  ]
+}

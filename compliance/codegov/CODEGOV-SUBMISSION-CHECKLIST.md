@@ -6,7 +6,7 @@ Use this checklist before publishing inventory metadata and open-source release 
 
 - Confirm repository has an approved open-source license.
 - Confirm public repository URL and release/archive URL are valid.
-- Populate and review `/Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/compliance/codegov/code.json.template` for agency values.
+- Populate and review `${WORK_SOURCE_CODE_ROOT}/databricks-lambda-restapi-terraform/compliance/codegov/code.json.template` for agency values.
 - Ensure fields align with current Code.gov schema and agency OCIO guidance.
 - Ensure points of contact (`contact.name`, `contact.email`) are staffed.
 

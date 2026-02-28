@@ -2,7 +2,7 @@
 
 This repository includes a CycloneDX SBOM at:
 
-- `/Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/compliance/sbom/sbom.cyclonedx.json`
+- `${WORK_SOURCE_CODE_ROOT}/databricks-lambda-restapi-terraform/compliance/sbom/sbom.cyclonedx.json`
 
 ## Source Baseline and Constraints
 

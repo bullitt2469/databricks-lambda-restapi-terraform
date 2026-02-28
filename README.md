@@ -99,7 +99,7 @@ This script:
 
 ## CI/CD compliance validation
 
-The workflow at `/Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/.github/workflows/terraform.yml` now:
+The workflow at `${WORK_SOURCE_CODE_ROOT}/databricks-lambda-restapi-terraform/.github/workflows/terraform.yml` now:
 - runs Terraform plan on PRs
 - runs Terraform apply on `main`
 - runs post-apply federal validation on `main`
@@ -112,23 +112,23 @@ To run the same checks as GitHub Actions on every commit:
 1. Configure local env file:
 
 ```bash
-cp /Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/.env.local.test.example /Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/.env.local.test
+cp ${WORK_SOURCE_CODE_ROOT}/databricks-lambda-restapi-terraform/.env.local.test.example ${WORK_SOURCE_CODE_ROOT}/databricks-lambda-restapi-terraform/.env.local.test
 ```
 
 2. Install commit hook:
 
 ```bash
-/Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/scripts/setup-commit-hooks.sh
+${WORK_SOURCE_CODE_ROOT}/databricks-lambda-restapi-terraform/scripts/setup-commit-hooks.sh
 ```
 
 3. Optional: load env vars into current shell:
 
 ```bash
-source /Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/scripts/load-local-test-env.sh
+source ${WORK_SOURCE_CODE_ROOT}/databricks-lambda-restapi-terraform/scripts/load-local-test-env.sh
 ```
 
 Commit hook behavior:
-- Runs `/Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/scripts/run-ci-local.sh`
+- Runs `${WORK_SOURCE_CODE_ROOT}/databricks-lambda-restapi-terraform/scripts/run-ci-local.sh`
 - Validates SBOM minimum elements
 - Validates Code.gov metadata minimum elements
 - Runs Terraform `fmt`, `init -backend=false`, and `validate` for `modules`, `envs/dev`, and `envs/prod`
@@ -137,7 +137,7 @@ Commit hook behavior:
 To run the Terraform deployment-workflow parity checks locally (requires AWS credentials):
 
 ```bash
-TF_ENV=dev /Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/scripts/run-terraform-workflow-local.sh
+TF_ENV=dev ${WORK_SOURCE_CODE_ROOT}/databricks-lambda-restapi-terraform/scripts/run-terraform-workflow-local.sh
 ```
 
 ## NIST 800-53 Rev. 5 mapping
@@ -167,8 +167,8 @@ flowchart TD
 
 ## SBOM (CISA 2025 minimum-elements aligned)
 
-- SBOM file: `/Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/compliance/sbom/sbom.cyclonedx.json`
-- Mapping and governance: `/Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/compliance/sbom/SBOM-MINIMUM-ELEMENTS-MAPPING.md`
+- SBOM file: `${WORK_SOURCE_CODE_ROOT}/databricks-lambda-restapi-terraform/compliance/sbom/sbom.cyclonedx.json`
+- Mapping and governance: `${WORK_SOURCE_CODE_ROOT}/databricks-lambda-restapi-terraform/compliance/sbom/SBOM-MINIMUM-ELEMENTS-MAPPING.md`
 - Validation command:
 
 ```bash
@@ -177,11 +177,11 @@ python3 compliance/sbom/validate_sbom.py
 
 ## SHARE IT Act and Code.gov Alignment
 
-- Reuse guide: `/Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/compliance/reuse/SHARE-IT-CODEGOV-ALIGNMENT.md`
-- Code.gov template: `/Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/compliance/codegov/code.json.template`
-- USDA Code.gov metadata: `/Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/compliance/codegov/code.json`
-- Code.gov checklist: `/Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/compliance/codegov/CODEGOV-SUBMISSION-CHECKLIST.md`
-- Code.gov metadata validator: `/Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/compliance/codegov/validate_codegov_metadata.py`
+- Reuse guide: `${WORK_SOURCE_CODE_ROOT}/databricks-lambda-restapi-terraform/compliance/reuse/SHARE-IT-CODEGOV-ALIGNMENT.md`
+- Code.gov template: `${WORK_SOURCE_CODE_ROOT}/databricks-lambda-restapi-terraform/compliance/codegov/code.json.template`
+- USDA Code.gov metadata: `${WORK_SOURCE_CODE_ROOT}/databricks-lambda-restapi-terraform/compliance/codegov/code.json`
+- Code.gov checklist: `${WORK_SOURCE_CODE_ROOT}/databricks-lambda-restapi-terraform/compliance/codegov/CODEGOV-SUBMISSION-CHECKLIST.md`
+- Code.gov metadata validator: `${WORK_SOURCE_CODE_ROOT}/databricks-lambda-restapi-terraform/compliance/codegov/validate_codegov_metadata.py`
 
 ## Federal tailoring guidance
 

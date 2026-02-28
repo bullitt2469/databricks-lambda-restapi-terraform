@@ -56,8 +56,8 @@ flowchart TD
 
 ## Code.gov Alignment (Implementation Guidance)
 
-- Use `/Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/compliance/codegov/code.json.template` as the agency metadata starting point.
-- Run the checklist in `/Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/compliance/codegov/CODEGOV-SUBMISSION-CHECKLIST.md` before submission.
+- Use `${WORK_SOURCE_CODE_ROOT}/databricks-lambda-restapi-terraform/compliance/codegov/code.json.template` as the agency metadata starting point.
+- Run the checklist in `${WORK_SOURCE_CODE_ROOT}/databricks-lambda-restapi-terraform/compliance/codegov/CODEGOV-SUBMISSION-CHECKLIST.md` before submission.
 - Keep metadata synchronized with releases and repository URLs.
 - Integrate SBOM and compliance evidence into release governance.
 

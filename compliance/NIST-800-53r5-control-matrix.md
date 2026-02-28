@@ -70,7 +70,7 @@ The script writes an evidence bundle to `compliance/validation/evidence/<timesta
 
 SBOM evidence and policy mapping:
 
-- `/Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/compliance/sbom/sbom.cyclonedx.json`
-- `/Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/compliance/sbom/SBOM-MINIMUM-ELEMENTS-MAPPING.md`
-- `/Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/compliance/reuse/SHARE-IT-CODEGOV-ALIGNMENT.md`
-- `/Users/caseycook/Desktop/Work Source Code/databricks-lambda-restapi-terraform/compliance/codegov/code.json.template`
+- `${WORK_SOURCE_CODE_ROOT}/databricks-lambda-restapi-terraform/compliance/sbom/sbom.cyclonedx.json`
+- `${WORK_SOURCE_CODE_ROOT}/databricks-lambda-restapi-terraform/compliance/sbom/SBOM-MINIMUM-ELEMENTS-MAPPING.md`
+- `${WORK_SOURCE_CODE_ROOT}/databricks-lambda-restapi-terraform/compliance/reuse/SHARE-IT-CODEGOV-ALIGNMENT.md`
+- `${WORK_SOURCE_CODE_ROOT}/databricks-lambda-restapi-terraform/compliance/codegov/code.json.template`
